@@ -14,6 +14,7 @@ function thanos_snap() {
             should_die = getRandomBoolean();
             should_die = tab.active ? false : should_die;
             if (should_die) {
+                // Future use: Tab.favIconUrl
                 console.log(`Killed by thanos: ${tab.title} <${tab.url}>`);
                 browser.tabs.remove(tab.id);
             }
