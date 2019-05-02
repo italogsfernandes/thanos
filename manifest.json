@@ -22,7 +22,7 @@
   },
 
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["thanos.js"]
   }
 
 }

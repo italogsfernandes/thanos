@@ -7,32 +7,53 @@ var currentBookmark;
  * is already bookmarked.
  */
 function updateIcon() {
-  browser.browserAction.setIcon({
-    path: currentBookmark ? {
-      48: "icons/unsnap-48.png",
-      128: "icons/unsnap-128.png"
-    } : {
-      48: "icons/thanos-48.png",
-      128: "icons/thanos-128.png"
-    },
-    tabId: currentTab.id
-  });
-  browser.browserAction.setTitle({
-    // Screen readers can see the title
-    title: currentBookmark ? 'Unsnap it!' : 'Do snap!',
-    tabId: currentTab.id
-  }); 
+    browser.browserAction.setIcon({
+        path: currentBookmark ? {
+            48: "icons/unsnap-48.png",
+            128: "icons/unsnap-128.png"
+        } : {
+            48: "icons/thanos-48.png",
+            128: "icons/thanos-128.png"
+        },
+        tabId: currentTab.id
+    });
+    browser.browserAction.setTitle({
+        // Screen readers can see the title
+        title: currentBookmark ? 'Unsnap it!' : 'Do snap!',
+        tabId: currentTab.id
+    });
+}
+
+
+function getCurrentWindowTabs() {
+    return browser.tabs.query({
+        currentWindow: true
+    });
+}
+
+function getRandomBoolean() {
+  return Math.random() >= 0.5;
 }
 
 /*
  * Add or remove the bookmark on the current page.
  */
 function thanos_snap() {
-  if (currentBookmark) {
-    browser.bookmarks.remove(currentBookmark.id);
-  } else {
-    browser.bookmarks.create({title: currentTab.title, url: currentTab.url});
-  }
+    //if (currentBookmark) {
+    //  browser.bookmarks.remove(currentBookmark.id);
+    //} else {
+    //  browser.bookmarks.create({title: currentTab.title, url: currentTab.url});
+    //}
+
+    getCurrentWindowTabs().then((tabs) => {
+        for (var tab of tabs) {
+            should_die = getRandomBoolean();
+            should_die = tab.active ? True : should_die;
+            if (!should_die) {
+                browser.tabs.remove(tab.id);
+            }
+        }
+    });
 }
 
 browser.browserAction.onClicked.addListener(thanos_snap);
@@ -43,31 +64,49 @@ browser.browserAction.onClicked.addListener(thanos_snap);
  */
 function updateActiveTab(tabs) {
 
-  function isSupportedProtocol(urlString) {
-    var supportedProtocols = ["https:", "http:", "ftp:", "file:"];
-    var url = document.createElement('a');
-    url.href = urlString;
-    return supportedProtocols.indexOf(url.protocol) != -1;
-  }
-  
-  function updateTab(tabs) {
-    if (tabs[0]) {
-      currentTab = tabs[0];
-      if (isSupportedProtocol(currentTab.url)) {
-        var searching = browser.bookmarks.search({url: currentTab.url});
-        searching.then((bookmarks) => {
-          currentBookmark = bookmarks[0];
-          updateIcon();
-        });
-      } else {
-        console.log(`Thanos! does not support the '${currentTab.url}' URL.`)
-      }
+    function isSupportedProtocol(urlString) {
+        var supportedProtocols = ["https:", "http:", "ftp:", "file:"];
+        var url = document.createElement('a');
+        url.href = urlString;
+        return supportedProtocols.indexOf(url.protocol) != -1;
     }
-  }
 
-  var gettingActiveTab = browser.tabs.query({active: true, currentWindow: true});
-  gettingActiveTab.then(updateTab);
+    function updateTab(tabs) {
+        if (tabs[0]) {
+            currentTab = tabs[0];
+            if (isSupportedProtocol(currentTab.url)) {
+                var searching = browser.bookmarks.search({
+                    url: currentTab.url
+                });
+                searching.then((bookmarks) => {
+                    currentBookmark = bookmarks[0];
+                    updateIcon();
+                });
+            } else {
+                console.log(`Thanos! does not support the '${currentTab.url}' URL.`)
+            }
+        }
+    }
+
+    var gettingActiveTab = browser.tabs.query({
+        active: true,
+        currentWindow: true
+    });
+    gettingActiveTab.then(updateTab);
 }
+
+
+
+//onRemoved listener. fired when tab is removed
+browser.tabs.onRemoved.addListener((tabId, removeInfo) => {
+    console.log(`The tab with id: ${tabId}, has died with thanos snap.`);
+
+    if (removeInfo.isWindowClosing) {
+        console.log(`Its window is also closing.`);
+    } else {
+        console.log(`Its window is not closing`);
+    }
+});
 
 // listen for bookmarks being created
 browser.bookmarks.onCreated.addListener(updateActiveTab);
@@ -82,4 +121,3 @@ browser.windows.onFocusChanged.addListener(updateActiveTab);
 
 // update when the extension loads initially
 updateActiveTab();
-
