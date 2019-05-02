@@ -1,13 +1,10 @@
 {
 
-  "manifest_version": 1,
+  "manifest_version": 2,
   "name": "thanos",
   "version": "1.0",
   "description": "When tiggered closes half of the opened tabs.",
-  "main": "thanos.js",
-  "repository": "https://github.com/italogsfernandes/thanos",
   "author": "italogsfernandes",
-  "license": "MIT",
   "icons": {
     "48": "icons/thanos-48.png",
     "96": "icons/thanos-96.png",
@@ -19,14 +16,5 @@
       "matches": ["*://*.mozilla.org/*"],
       "js": ["thanos.js"]
     }
-  ],
-  
-  "permissions": [
-    "contextMenus",
-    "storage",
-    "tabs",
-    "history",
-    "identity",
-    "notifications"
   ]
 }
