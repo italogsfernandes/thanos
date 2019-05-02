@@ -1,0 +1,20 @@
+{
+
+  "manifest_version": 1,
+  "name": "thanos",
+  "version": "1.0",
+
+  "description": "When tiggered closes half of the opened tabs.",
+
+  "icons": {
+    "48": "icons/thanos-48.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.mozilla.org/*"],
+      "js": ["thanos.js"]
+    }
+  ]
+
+}
