@@ -122,10 +122,11 @@ function snap_this_tab() {
                         for (let i = 0; i < canvasCount; i++) {
                             let c = newCanvasFromImageData(imageDataArray[i], canvas.width, canvas.height);
                             c.classList.add("dust");
-                            $("body").append(c);
+                            $(".body").append(c);
                         }
                         //clear all children except the canvas
-                        $(".content").children().not(".dust").fadeOut(3500);
+                        $(".body").children().not(".dust").fadeOut(3500);
+                        //apply animation
                         //apply animation
                         $(".dust").each(function(index) {
                             animateBlur($(this), 0.8, 800);
@@ -142,11 +143,11 @@ function snap_this_tab() {
                         });
                     });
 
+                }
+                // browser.tabs.remove(tab.id);
+            }
         }
-        // browser.tabs.remove(tab.id);
-    }
-}
-});
+    });
 }
 
 // browser.browserAction.onClicked.addListener(thanos_snap);
