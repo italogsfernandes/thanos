@@ -98,54 +98,53 @@ function newCanvasFromImageData(imageDataArray, w, h) {
 
 function snap_this_tab() {
     getCurrentWindowTabs().then((tabs) => {
-            for (var tab of tabs) {
-                if (tab.active) {
-                    // Future use: Tab.favIconUrl
-                    console.log(`This tab: ${tab.title} <${tab.url}>`);
-                    html2canvas($("body")).then(canvas => {
-                        //capture all div data as image
-                        ctx = canvas.getContext("2d");
-                        var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                        var pixelArr = imageData.data;
-                        createBlankImageData(imageData);
-                        //put pixel info to imageDataArray (Weighted Distributed)
-                        for (let i = 0; i < pixelArr.length; i += 4) {
-                            //find the highest probability canvas the pixel should be in
-                            let p = Math.floor((i / pixelArr.length) * canvasCount);
-                            let a = imageDataArray[weightedRandomDistrib(p)];
-                            a[i] = pixelArr[i];
-                            a[i + 1] = pixelArr[i + 1];
-                            a[i + 2] = pixelArr[i + 2];
-                            a[i + 3] = pixelArr[i + 3];
-                        }
-                        //create canvas for each imageData and append to target element
-                        for (let i = 0; i < canvasCount; i++) {
-                            let c = newCanvasFromImageData(imageDataArray[i], canvas.width, canvas.height);
-                            c.classList.add("dust");
-                            $(".body").append(c);
-                        }
-                        //clear all children except the canvas
-                        $(".body").children().not(".dust").fadeOut(3500);
-                        //apply animation
-                        //apply animation
-                        $(".dust").each(function(index) {
-                            animateBlur($(this), 0.8, 800);
-                            setTimeout(() => {
-                                animateTransform($(this), 100, -100, chance.integer({
-                                    min: -15,
-                                    max: 15
-                                }), 800 + (110 * index));
-                            }, 70 * index);
-                            //remove the canvas from DOM tree when faded
-                            $(this).delay(70 * index).fadeOut((110 * index) + 800, "easeInQuint", () => {
-                                $(this).remove();
-                            });
+        for (var tab of tabs) {
+            if (tab.active) {
+                // Future use: Tab.favIconUrl
+                console.log(`This tab: ${tab.title} <${tab.url}>`);
+                html2canvas($("body")).then(canvas => {
+                    //capture all div data as image
+                    ctx = canvas.getContext("2d");
+                    var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    var pixelArr = imageData.data;
+                    createBlankImageData(imageData);
+                    //put pixel info to imageDataArray (Weighted Distributed)
+                    for (let i = 0; i < pixelArr.length; i += 4) {
+                        //find the highest probability canvas the pixel should be in
+                        let p = Math.floor((i / pixelArr.length) * canvasCount);
+                        let a = imageDataArray[weightedRandomDistrib(p)];
+                        a[i] = pixelArr[i];
+                        a[i + 1] = pixelArr[i + 1];
+                        a[i + 2] = pixelArr[i + 2];
+                        a[i + 3] = pixelArr[i + 3];
+                    }
+                    //create canvas for each imageData and append to target element
+                    for (let i = 0; i < canvasCount; i++) {
+                        let c = newCanvasFromImageData(imageDataArray[i], canvas.width, canvas.height);
+                        c.classList.add("dust");
+                        $(".body").append(c);
+                    }
+                    //clear all children except the canvas
+                    $(".body").children().not(".dust").fadeOut(3500);
+                    //apply animation
+                    //apply animation
+                    $(".dust").each(function(index) {
+                        animateBlur($(this), 0.8, 800);
+                        setTimeout(() => {
+                            animateTransform($(this), 100, -100, chance.integer({
+                                min: -15,
+                                max: 15
+                            }), 800 + (110 * index));
+                        }, 70 * index);
+                        //remove the canvas from DOM tree when faded
+                        $(this).delay(70 * index).fadeOut((110 * index) + 800, "easeInQuint", () => {
+                            $(this).remove();
                         });
                     });
+                });
 
-                }
-                // browser.tabs.remove(tab.id);
             }
+            // browser.tabs.remove(tab.id);
         }
     });
 }
