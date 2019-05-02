@@ -3,7 +3,7 @@
   "manifest_version": 2,
   "name": "thanos",
   "version": "1.0",
-  "description": "When tiggered closes half of the opened tabs.",
+  "description": "When triggered closes half of the opened tabs.",
   "author": "italogsfernandes",
   "icons": {
     "48": "icons/thanos-48.png",
