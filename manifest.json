@@ -10,9 +10,8 @@
     "128": "icons/thanos-128.png"
   },
 
-  
+
   "permissions": [
-    "bookmarks",
     "tabs"
   ],
 
