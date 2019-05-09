@@ -1,25 +1,31 @@
 {
-  "manifest_version": 2,
-  "name": "thanos",
-  "version": "1.0",
-  "description": "When triggered closes half of the opened tabs.",
-  "author": "italogsfernandes",
-  "icons": {
-    "48": "icons/thanos-48.png",
-    "128": "icons/thanos-128.png"
-  },
+    "manifest_version": 2,
+    "name": "thanos",
+    "version": "1.0",
+    "description": "When triggered closes half of the opened tabs.",
+    "author": "italogsfernandes",
+    "icons": {
+        "48": "icons/thanos-48.png",
+        "128": "icons/thanos-128.png"
+    },
 
-  "permissions": [
-    "tabs",
-    "storage"
-  ],
+    "permissions": [
+        "tabs",
+        "storage"
+    ],
 
-  "browser_action": {
-    "default_icon": "icons/thanos-48.png",
-    "default_title": "Snap!"
-  },
+    "browser_action": {
+        "default_icon": "icons/thanos-48.png",
+        "default_title": "Snap!"
+    },
 
-  "background": {
-    "scripts": ["thanos.js"]
-  }
+    "background": {
+        "scripts": ["thanos.js"]
+    },
+
+    "applications": {
+        "gecko": {
+            "id": "thanos-snap@italogsfernandes.com"
+        }
+    }
 }
