@@ -1,5 +1,4 @@
 {
-
   "manifest_version": 2,
   "name": "thanos",
   "version": "1.0",
@@ -10,24 +9,23 @@
     "128": "icons/thanos-128.png"
   },
 
-
   "permissions": [
     "tabs",
-    "storage",
+    "storage"
   ],
 
   "browser_action": {
     "default_icon": "icons/thanos-48.png",
     "default_title": "Snap!"
   },
+
   "browser_action": {
     "default_icon": "icons/dust-48.png",
     "default_title": "Memorial",
-    "default_popup": "memorial/memorial.html"
+    "default_popup": "popup/memorial.html"
   },
 
   "background": {
     "scripts": ["thanos.js"]
   }
-
 }
