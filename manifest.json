@@ -21,11 +21,6 @@
 
     "background": {
         "scripts": ["thanos.js"]
-    },
-
-    "applications": {
-        "gecko": {
-            "id": "thanos-snap@italogsfernandes.com"
-        }
     }
+
 }
