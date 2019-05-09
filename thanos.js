@@ -1,3 +1,8 @@
+// generic error handler
+function onError(error) {
+    console.log(error);
+}
+
 function getCurrentWindowTabs() {
     return browser.tabs.query({
         currentWindow: true
