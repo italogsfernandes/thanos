@@ -19,12 +19,6 @@
     "default_title": "Snap!"
   },
 
-  "browser_action": {
-    "default_icon": "icons/dust-48.png",
-    "default_title": "Memorial",
-    "default_popup": "popup/memorial.html"
-  },
-
   "background": {
     "scripts": ["thanos.js"]
   }

@@ -1,4 +1,11 @@
+// initialise variables
+
 var memorialContainer = document.querySelector('.memorial-container');
+
+var clearBtn = document.querySelector('.clear');
+
+// add event listeners to buttons
+clearBtn.addEventListener('click', clearAll);
 
 // Display previously-saved stored victims list on startup
 initialize();
@@ -11,11 +18,7 @@ function initialize() {
             var snapVictims = results[snapTitle];
             displayVictimsList(snapTitle, snapVictims);
         }
-    }, onError);
-    displayVictimsList("snapTitle0", "snapVictims0");
-    displayVictimsList("snapTitle1", "snapVictims1");
-    displayVictimsList("snapTitle2", "snapVictims2");
-    displayVictimsList("snapTitle3", "snapVictims3");
+    });
 }
 
 // function to display the victims names as a memorial
@@ -23,16 +26,34 @@ function displayVictimsList(snapTitle, snapVictims) {
     // create memorial display box
     var memorialArea = document.createElement('div');
     var memorialDisplay = document.createElement('div');
-    var memorialH = document.createElement('h2');
-    var memorialP = document.createElement('p');
+    var memorialSnap_h = document.createElement('h2');
+    var memorialSnap_ul = document.createElement('ul');
 
     memorialArea.setAttribute('class', 'snap_memorial');
 
-    memorialH.textContent = snapTitle;
-    memorialP.textContent = snapVictims;
+    memorialSnap_h.textContent = `Killed by thanos - ${snapTitle}`;
+    for(var victim of snapVictims){
+        var victim_li = document.createElement('li');
+        var tab_img = document.createElement('img');
+        var tab_a = document.createElement('a');
 
-    memorialDisplay.appendChild(memorialH);
-    memorialDisplay.appendChild(memorialP);
+        tab_img.src = victim.favIconUrl;
+        tab_a.href = victim.url;
+        tab_a.textContent = victim.title;
+
+        tab_img.width = "16";
+        tab_img.height = "16";
+        tab_a.style = "padding-right:12px;text-decoration:none;";
+
+        victim_li.appendChild(tab_img);
+        victim_li.appendChild(tab_a);
+        memorialSnap_ul.appendChild(victim_li);
+    }
+
+    memorialSnap_ul.style = "list-style-type:none;"
+
+    memorialDisplay.appendChild(memorialSnap_h);
+    memorialDisplay.appendChild(memorialSnap_ul);
     memorialArea.appendChild(memorialDisplay);
 
     memorialContainer.appendChild(memorialArea);
