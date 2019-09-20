@@ -1,5 +1,7 @@
 // initialise variables
 
+var browser = browser || chrome;
+
 var memorialContainer = document.querySelector('.memorial-container');
 
 var clearBtn = document.querySelector('.clear');
@@ -11,14 +13,21 @@ clearBtn.addEventListener('click', clearAll);
 initialize();
 
 function initialize() {
-    var gettingAllStorageItems = browser.storage.local.get(null);
-    gettingAllStorageItems.then((results) => {
-        var snapTitles = Object.keys(results);
-        for (let snapTitle of snapTitles) {
-            var snapVictims = results[snapTitle];
-            displayVictimsList(snapTitle, snapVictims);
+    /*browser.storage.local.set({['snapTitle']: 'snapVictims'}, function() {
+          console.log('Value is set to ');
+          console.log('snapTitle');
         }
-    });
+    );*/
+    browser.storage.local.get(null, 
+        function (results) {
+            var snapTitles = Object.keys(results);
+            console.log(snapTitles);
+            for (let snapTitle of snapTitles) {
+                var snapVictims = results[snapTitle];
+                displayVictimsList(snapTitle, snapVictims);
+            }
+        }
+    );
 }
 
 // function to display the victims names as a memorial
@@ -67,4 +76,5 @@ function clearAll() {
         memorialContainer.removeChild(memorialContainer.firstChild);
     }
     browser.storage.local.clear();
+    console.log('browser.storage.local.clear()');
 }
